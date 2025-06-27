@@ -1,2 +1,9 @@
 // Query 1: Show all documents in the Restaurants collection
-Filter vacio: {}
+empty filter: 
+{}
+
+// Query 2: Show restaurant_id, name, borough and cuisine for all documents
+empty filter: 
+{}
+Project: 
+{ "restaurant_id": 1, "name": 1, "borough": 1, "cuisine": 1 }
