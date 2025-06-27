@@ -1,0 +1,2 @@
+// Query 1: Show all documents in the Restaurants collection
+Filter vacio: {}
