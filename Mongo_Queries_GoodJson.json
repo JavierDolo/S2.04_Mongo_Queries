@@ -1,0 +1,497 @@
+[
+  {
+    "id": 1,
+    "descripcion": "Mostrar todos los documentos",
+    "tipo": "find",
+    "coleccion": "restaurants",
+    "query": {}
+  },
+  {
+    "id": 2,
+    "descripcion": "Mostrar restaurant_id, name, borough y cuisine",
+    "tipo": "find",
+    "coleccion": "restaurants",
+    "query": {},
+    "projection": {
+      "restaurant_id": 1,
+      "name": 1,
+      "borough": 1,
+      "cuisine": 1
+    }
+  },
+  {
+    "id": 3,
+    "descripcion": "Mostrar los mismos campos que en la consulta 2, excluyendo _id",
+    "tipo": "find",
+    "coleccion": "restaurants",
+    "query": {},
+    "projection": {
+      "restaurant_id": 1,
+      "name": 1,
+      "borough": 1,
+      "cuisine": 1,
+      "_id": 0
+    }
+  },
+  {
+    "id": 4,
+    "descripcion": "Mostrar restaurant_id, name, borough y zipcode (sin _id)",
+    "tipo": "find",
+    "coleccion": "restaurants",
+    "query": {},
+    "projection": {
+      "restaurant_id": 1,
+      "name": 1,
+      "borough": 1,
+      "address.zipcode": 1,
+      "_id": 0
+    }
+  },
+  {
+    "id": 5,
+    "descripcion": "Restaurantes ubicados en el Bronx (insensible a mayúsculas)",
+    "tipo": "find",
+    "coleccion": "restaurants",
+    "query": {
+      "borough": {
+        "$regex": "bronx",
+        "$options": "i"
+      }
+    }
+  },
+  {
+    "id": 6,
+    "descripcion": "Top 5 restaurantes del Bronx por puntuación",
+    "tipo": "find",
+    "coleccion": "restaurants",
+    "query": {
+      "borough": {
+        "$regex": "Bronx",
+        "$options": "i"
+      }
+    },
+    "sort": {
+      "grades.score": -1
+    },
+    "limit": 5
+  },
+  {
+    "id": 7,
+    "descripcion": "Próximos 5 restaurantes del Bronx después de omitir los primeros 5",
+    "tipo": "find",
+    "coleccion": "restaurants",
+    "query": {
+      "borough": {
+        "$regex": "Bronx",
+        "$options": "i"
+      }
+    },
+    "sort": {
+      "grades.score": -1
+    },
+    "skip": 5,
+    "limit": 5
+  },
+  {
+    "id": 8,
+    "descripcion": "Restaurantes con score mayor a 90",
+    "tipo": "find",
+    "coleccion": "restaurants",
+    "query": {
+      "grades.score": {
+        "$gt": 90
+      }
+    }
+  },
+  {
+    "id": 9,
+    "descripcion": "Restaurantes con score entre 80 y 100",
+    "tipo": "find",
+    "coleccion": "restaurants",
+    "query": {
+      "grades.score": {
+        "$gt": 80,
+        "$lt": 100
+      }
+    }
+  },
+  {
+    "id": 10,
+    "descripcion": "Restaurantes con latitud menor a -95.754168",
+    "tipo": "find",
+    "coleccion": "restaurants",
+    "query": {
+      "address.coord": {
+        "$lt": -95.754169
+      }
+    }
+  },
+  {
+    "id": 11,
+    "descripcion": "Restaurantes que no sirven American, score > 70 y longitud < -65.754168",
+    "tipo": "find",
+    "coleccion": "restaurants",
+    "query": {
+      "cuisine": { "$ne": "American" },
+      "grades": { "$elemMatch": { "score": { "$gt": 70 } } },
+      "address.coord.0": { "$lt": -65.754168 }
+    }
+  },
+  {
+    "id": 12,
+    "descripcion": "Igual que la 11, sin operador $and",
+    "tipo": "find",
+    "coleccion": "restaurants",
+    "query": {
+      "cuisine": { "$ne": "American" },
+      "grades": { "$elemMatch": { "score": { "$gt": 70 } } },
+      "address.coord.0": { "$lt": -65.754168 }
+    }
+  },
+  {
+    "id": 13,
+    "descripcion": "No American, fuera de Brooklyn, grade A; ordenado por cuisine desc",
+    "tipo": "find",
+    "coleccion": "restaurants",
+    "query": {
+  "$and": [
+    {
+      "cuisine": {
+        "$not": {
+          "$regex": "^\\s*American\\s*$",
+          "$options": "i"
+        }
+      }
+    },
+    { "borough": { "$ne": "Brooklyn" } },
+    { "grades": { "$elemMatch": { "grade": "A" } } }
+  ]
+},
+    "sort": { "cuisine": -1 }
+  },
+  {
+    "id": 14,
+    "descripcion": "Nombre empieza con 'Wil'",
+    "tipo": "find",
+    "coleccion": "restaurants",
+    "query": { "name": { "$regex": "^Wil", "$options": "i" } },
+    "projection": {
+      "restaurant_id": 1,
+      "name": 1,
+      "borough": 1,
+      "cuisine": 1,
+      "_id": 0
+    }
+  },
+  {
+    "id": 15,
+    "descripcion": "Nombre termina en 'ces'",
+    "tipo": "find",
+    "coleccion": "restaurants",
+    "query": { "name": { "$regex": "ces$", "$options": "i" } },
+    "projection": {
+      "restaurant_id": 1,
+      "name": 1,
+      "borough": 1,
+      "cuisine": 1,
+      "_id": 0
+    }
+  },
+  {
+    "id": 16,
+    "descripcion": "Nombre contiene 'Reg'",
+    "tipo": "find",
+    "coleccion": "restaurants",
+    "query": { "name": { "$regex": "Reg", "$options": "i" } },
+    "projection": {
+      "restaurant_id": 1,
+      "name": 1,
+      "borough": 1,
+      "cuisine": 1,
+      "_id": 0
+    }
+  },
+  {
+    "id": 17,
+    "descripcion": "En Bronx y preparan American o Chinese",
+    "tipo": "find",
+    "coleccion": "restaurants",
+    "query": {
+      "$and": [
+        { "borough": { "$regex": "Bronx", "$options": "i" } },
+        {
+          "$or": [
+            { "cuisine": { "$regex": "American", "$options": "i" } },
+            { "cuisine": { "$regex": "Chinese", "$options": "i" } }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": 18,
+    "descripcion": "Restaurantes en Staten Island, Queens, Bronx o Brooklyn",
+    "tipo": "find",
+    "coleccion": "restaurants",
+    "query": {
+      "$or": [
+        { "borough": { "$regex": "Bronx", "$options": "i" } },
+        { "borough": { "$regex": "Staten Island", "$options": "i" } },
+        { "borough": { "$regex": "Queens", "$options": "i" } },
+        { "borough": { "$regex": "Brooklyn", "$options": "i" } }
+      ]
+    },
+    "projection": {
+      "restaurant_id": 1,
+      "name": 1,
+      "cuisine": 1,
+      "_id": 0
+    }
+  },
+  {
+    "id": 19,
+    "descripcion": "Restaurantes fuera de Staten Island, Queens, Bronx y Brooklyn",
+    "tipo": "find",
+    "coleccion": "restaurants",
+    "query": {
+      "borough": {
+        "$nin": ["Bronx", "Staten Island", "Queens", "Brooklyn"]
+      }
+    },
+    "projection": {
+      "restaurant_id": 1,
+      "name": 1,
+      "cuisine": 1,
+      "_id": 0
+    }
+  },
+  {
+    "id": 20,
+    "descripcion": "Score menor o igual a 10",
+    "tipo": "find",
+    "coleccion": "restaurants",
+    "query": {
+      "grades.score": { "$lte": 10 }
+    },
+    "projection": {
+      "restaurant_id": 1,
+      "name": 1,
+      "borough": 1,
+      "cuisine": 1,
+      "_id": 0
+    }
+  },
+  {
+    "id": 21,
+    "descripcion": "Restaurantes que preparan fish, excepto American y Chinese, o empiezan por 'Wil'",
+    "tipo": "find",
+    "coleccion": "restaurants",
+    "query": {
+      "$or": [
+        { "name": { "$regex": "^Wil", "$options": "i" } },
+        { "cuisine": { "$regex": "fish", "$options": "i" } }
+      ],
+      "cuisine": { "$nin": ["American", "Chinese"] }
+    },
+    "projection": {
+      "restaurant_id": 1,
+      "name": 1,
+      "borough": 1,
+      "cuisine": 1,
+      "_id": 0
+    }
+  },
+  {
+    "id": 22,
+    "descripcion": "Grade A, score 11, fecha exacta (ISODate 2014-08-11)",
+    "tipo": "find",
+    "coleccion": "restaurants",
+    "query": {
+      "$and": [
+        { "grades.grade": "A" },
+        { "grades.score": 11 },
+        { "grades.date": { "$date": "2014-08-11T00:00:00Z" } }
+      ]
+    },
+    "projection": {
+      "restaurant_id": 1,
+      "name": 1,
+      "grades": 1,
+      "_id": 0
+    }
+  },
+  {
+    "id": 23,
+    "descripcion": "Verifica que el segundo elemento del array grades tenga Grade A, Score 9, en la misma fecha",
+    "tipo": "find",
+    "coleccion": "restaurants",
+    "query": {
+      "$and": [
+        { "grades.1.grade": "A" },
+        { "grades.1.score": 9 },
+        { "grades.1.date": { "$date": "2014-08-11T00:00:00Z" } }
+      ]
+    },
+    "projection": {
+      "restaurant_id": 1,
+      "name": 1,
+      "grades": 1,
+      "_id": 0
+    }
+  },
+  {
+    "id": 24,
+    "descripcion": "Segunda coordenada entre 42 y 52",
+    "tipo": "find",
+    "coleccion": "restaurants",
+    "query": {
+      "address.coord.1": { "$gt": 42, "$lt": 52 }
+    },
+    "projection": {
+      "restaurant_id": 1,
+      "name": 1,
+      "address": 1,
+      "_id": 0
+    }
+  },
+  {
+    "id": 25,
+    "descripcion": "Ordenar por nombre ascendente y ocultar varios campos",
+    "tipo": "find",
+    "coleccion": "restaurants",
+    "query": {},
+    "projection": {
+      "_id": 0,
+      "restaurant_id": 0,
+      "address": 0,
+      "grades": 0,
+      "cuisine": 0,
+      "borough": 0
+    },
+    "sort": {
+      "name": 1
+    }
+  },
+  {
+    "id": 26,
+    "descripcion": "Ordenar por nombre descendente y mostrar todos los campos",
+    "tipo": "find",
+    "coleccion": "restaurants",
+    "query": {},
+    "projection": {
+      "_id": 1,
+      "restaurant_id": 1,
+      "address": 1,
+      "grades": 1,
+      "cuisine": 1,
+      "borough": 1
+    },
+    "sort": {
+      "name": -1
+    }
+  },
+  {
+    "id": 27,
+    "descripcion": "Ordenar por cuisine ascendente y borough descendente",
+    "tipo": "find",
+    "coleccion": "restaurants",
+    "query": {},
+    "projection": {
+      "cuisine": 1,
+      "borough": 1,
+      "_id": 0
+    },
+    "sort": {
+      "cuisine": 1,
+      "borough": -1
+    }
+  },
+  {
+    "id": 28,
+    "descripcion": "Restaurantes sin campo street o con valor null",
+    "tipo": "find",
+    "coleccion": "restaurants",
+    "query": {
+      "$or": [
+        { "address.street": { "$exists": false } },
+        { "address.street": null }
+      ]
+    },
+    "projection": {
+      "name": 1,
+      "address": 1,
+      "_id": 0
+    }
+  },
+  {
+    "id": 29,
+    "descripcion": "Restaurantes donde coord es tipo double",
+    "tipo": "find",
+    "coleccion": "restaurants",
+    "query": {
+      "address.coord": { "$type": "double" }
+    },
+    "projection": {
+      "name": 1,
+      "address.coord": 1,
+      "_id": 0
+    }
+  },
+  {
+    "id": 30,
+    "descripcion": "Score divisible por 7 usando aggregate",
+    "tipo": "aggregate",
+    "coleccion": "restaurants",
+    "pipeline": [
+      { "$match": { "grades.score": { "$mod": [7, 0] } } },
+      {
+        "$project": {
+          "restaurant_id": 1,
+          "name": 1,
+          "grades": 1,
+          "_id": 0
+        }
+      }
+    ]
+  },
+  {
+    "id": 31,
+    "descripcion": "Restaurantes cuyo nombre contiene 'mon' (en cualquier parte)",
+    "tipo": "find",
+    "coleccion": "restaurants",
+    "query": {
+      "name": {
+        "$regex": "mon",
+        "$options": "i"
+      }
+    },
+    "projection": {
+      "restaurant_id": 1,
+      "name": 1,
+      "borough": 1,
+      "cuisine": 1,
+      "address.coord": 1,
+      "_id": 0
+    }
+  },
+  {
+    "id": 32,
+    "descripcion": "Restaurantes cuyo nombre comienza con 'Mad'",
+    "tipo": "find",
+    "coleccion": "restaurants",
+    "query": {
+      "name": {
+        "$regex": "^Mad",
+        "$options": "i"
+      }
+    },
+    "projection": {
+      "restaurant_id": 1,
+      "name": 1,
+      "borough": 1,
+      "cuisine": 1,
+      "address.coord": 1,
+      "_id": 0
+    }
+  }
+]
